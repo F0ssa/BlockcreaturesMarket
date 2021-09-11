@@ -1,0 +1,21 @@
+.tooltip-img {
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.tooltip-image-size {
+  width: 100px;
+  height: 100px;
+}
+
+#fixedbutton {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  padding: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  z-index: 10;
+}

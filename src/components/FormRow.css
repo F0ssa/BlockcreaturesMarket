@@ -1,0 +1,83 @@
+.form-wrapper {
+  margin: 0px auto 0px auto;
+  padding: 0;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  height: 45px;
+  transition: height 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.form-wrapper:hover {
+  background-color: rgba(26, 26, 26, 0.9);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.form-wrapper:hover {
+  height: 250px;
+  transition: height 0.3s ease-in-out;
+}
+
+@media only screen and (max-width: 767px) and (min-width: 545px) {
+  .form-wrapper:hover {
+    height: 300px;
+    transition: height 0.3s ease-in-out;
+  }
+}
+
+.form-row {
+  width: 100%;
+  max-width: 1000px;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+}
+
+.border-common {
+  border-left: 4px solid #d0d0d0;
+}
+
+.border-uncommon {
+  border-left: 4px solid #e55137;
+}
+
+.border-rare {
+  border-left: 4px solid #89ac76;
+}
+
+.border-epic {
+  border-left: 4px solid #3b83bd;
+}
+
+.border-legendary {
+  border-left: 4px solid #4a192c;
+}
+
+.border-mythic {
+  border-left: 4px solid #063971;
+}
+
+.border-godlike {
+  border-left: 4px solid #dc9d00;
+}
+
+@media only screen and (max-width: 805px) and (min-width: 480px) {
+  .form-row {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .form-row {
+    margin: 0px;
+    padding: 1px;
+    font-size: 10px;
+  }
+}
+
+.more-content {
+  padding: 10px;
+  text-align: center;
+}

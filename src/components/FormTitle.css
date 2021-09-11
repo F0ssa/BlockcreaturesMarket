@@ -1,0 +1,29 @@
+.title-wrapper {
+  margin: 20px auto 0px auto;
+  padding: 0;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.041);
+  border-left: 4px solid rgba(255, 255, 255, 0.24);
+}
+
+.title-row {
+  width: 100%;
+  max-width: 1000px;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 805px) and (min-width: 361px) {
+  .title-row {
+    font-size: 9px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .title-row {
+    font-size: 6px;
+  }
+}

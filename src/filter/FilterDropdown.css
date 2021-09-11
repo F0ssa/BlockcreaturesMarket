@@ -1,0 +1,30 @@
+/* Custom Select */
+.selectDropdown {
+  display: flex;
+  height: 2em;
+  line-height: 2;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: 0.25em;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid hsl(0, 0%, 25%);
+}
+
+/* Arrow */
+.selectDropdown::after {
+  content: '\25BC';
+  padding-right: 1rem;
+  left: 0;
+  color: hsl(0, 0%, 65%);
+  background-color: hsl(225, 6%, 13%);
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: 0.25s all ease;
+  -o-transition: 0.25s all ease;
+  transition: 0.25s all ease;
+}
+/* Transition */
+.selectDropdown:hover::after {
+  color: white;
+}
