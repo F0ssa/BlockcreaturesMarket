@@ -7,11 +7,12 @@ module.exports = {
   devServer: {
     hot: true,
     open: true,
+    historyApiFallback: true,
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
-      'process.env.name': JSON.stringify('Vishwas'),
+      'process.env.name': JSON.stringify('Development'),
     }),
   ],
 }

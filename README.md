@@ -22,9 +22,9 @@ npm run build
 
 ### Consideration | TODO
 - Moolah Ticker.
-- Get all data and sort from all data. (Heavy network congestion and larger server load). Will need a trail / test run.
 
 ### Features
+- <s>Get all data and sort from all data. (Heavy network congestion and larger server load). Will need a trail / test run.</s>
 - <s>Top of page button.</s>
 - <s>Single field filters.</s>
 - <s>Multi field filters.</s>

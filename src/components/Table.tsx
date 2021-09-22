@@ -13,9 +13,9 @@ import FormTitle from './FormTitle'
 import SkeletonLoad from '../loader/SkeletonLoad'
 import * as MdIcons from 'react-icons/md'
 import * as GiIcons from 'react-icons/gi'
+import * as BsIcons from 'react-icons/bs'
 import * as RiIcons from 'react-icons/ri'
 import './Table.css'
-import Announcement from './Announcement'
 import FilterContainer from '../filter/FilterContainer'
 import FilterForm from '../filter/FilterForm'
 import FilterDropdown from '../filter/FilterDropdown'
@@ -87,6 +87,31 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
     color: 'hsl(0, 0%, 85%)',
   },
+  getAllButtonSpacing: {
+    marginTop: '5px',
+    marginBottom: '10px',
+    border: '1px solid white',
+  },
+  allDataDisclaimerContainer: {
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  cancelButton: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  allDataTextDisclaimerCenter: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  allDataTextDisclaimer: {
+    textAlign: 'center',
+    color: 'hsl(0, 0%, 85%)',
+    marginTop: '5px',
+    marginBottom: '5px',
+  },
 }
 
 interface Props {
@@ -137,6 +162,8 @@ class Table extends Component<Props> {
     filteredArray: [],
     isAppliedFilters: false,
     isCollapsedFilter: false,
+    isCollapsedWarningAllData: false,
+    isLoadingAllData: false,
   }
 
   componentDidMount() {
@@ -148,6 +175,12 @@ class Table extends Component<Props> {
       // this.getRecentMarket()
       this.getLastPage()
     }
+  }
+
+  preGetAllDataCheck() {
+    this.setState({
+      isCollapsedWarningAllData: !this.state.isCollapsedWarningAllData,
+    })
   }
 
   async loadUserFilterSettings() {
@@ -193,6 +226,7 @@ class Table extends Component<Props> {
     await this.setState({ isMarketLoaded: false })
     await this.filterAllFields()
     await this.setState({ isMarketLoaded: true })
+    this.getSortPatternStorage()
   }
 
   async filterAllFields() {
@@ -243,8 +277,9 @@ class Table extends Component<Props> {
 
   async getLastPage() {
     this.setState({ isLastPage: false })
-    // const url ='https://blockcreatures-marketplace.herokuapp.com/blockcreatures/lastpage'
-    const url = 'http://127.0.0.1:5000/blockcreatures/lastpage'
+    const url =
+      'https://blockcreatures-marketplace.herokuapp.com/blockcreatures/lastpage'
+    // const url = 'http://127.0.0.1:5000/blockcreatures/lastpage'
     let localLastPage = 0
     await fetch(url)
       .then((response) => response.json())
@@ -275,8 +310,9 @@ class Table extends Component<Props> {
   async getRecentMarket() {
     this.resetSortValues()
     this.setState({ isMarketLoaded: false })
-    // const url ='https://blockcreatures-marketplace.herokuapp.com/blockcreatures/recent'
-    const url = 'http://127.0.0.1:5000/blockcreatures/recent'
+    const url =
+      'https://blockcreatures-marketplace.herokuapp.com/blockcreatures/recent'
+    // const url = 'http://127.0.0.1:5000/blockcreatures/recent'
     let localArray: CreepData[] = []
     await fetch(url)
       .then((response) => response.json())
@@ -291,6 +327,29 @@ class Table extends Component<Props> {
     })
     this.getSortPatternStorage()
     this.createPageOptions(localArray[0].currentPage)
+  }
+
+  async getAllMarket() {
+    this.resetSortValues()
+    this.setState({ isMarketLoaded: false, isLoadingAllData: true })
+    const url =
+      'https://blockcreatures-marketplace.herokuapp.com/blockcreatures/marketplace/all'
+    // const url = 'http://127.0.0.1:5000/blockcreatures/marketplace/all'
+    let localArray: CreepData[] = []
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => (localArray = data))
+
+    // await delay(2000)
+    this.setState({
+      marketData: localArray,
+      orginalData: localArray,
+      isMarketLoaded: true,
+      page: 1000,
+      isCollapsedWarningAllData: !this.state.isCollapsedWarningAllData,
+      isLoadingAllData: false,
+    })
+    this.getSortPatternStorage()
   }
 
   async getMarketPage(pageInstance: number) {
@@ -787,66 +846,82 @@ class Table extends Component<Props> {
     return (
       <div>
         <Container maxWidth="lg">
-          <Announcement />
           <div>
-            <div style={styles.groupMargin}>
+            {this.state.isLoadingAllData ? (
               <Grid container spacing={3}>
                 <Grid
-                  style={styles.buttonLeft}
+                  style={styles.allDataTextDisclaimerCenter}
                   container
                   item
-                  xs={4}
+                  xs={12}
                   spacing={1}
                 >
-                  <button
-                    aria-label="Back"
-                    className="h-button centered hoverTextCenter"
-                    data-text="Back"
-                    onClick={() => this.getMarketPage(-1)}
-                  >
-                    <span>
-                      <MdIcons.MdKeyboardArrowLeft size={30} />
-                    </span>
-                  </button>
-                </Grid>
-                <Grid
-                  style={styles.buttonCenter}
-                  container
-                  item
-                  xs={4}
-                  spacing={1}
-                >
-                  <button
-                    aria-label="Recent"
-                    className="h-button centered hoverTextCenter"
-                    data-text="Recent Listings"
-                    onClick={() => this.getRecentMarket()}
-                  >
-                    <span>
-                      <GiIcons.GiRun size={30} />
-                    </span>
-                  </button>
-                </Grid>
-                <Grid
-                  style={styles.buttonRight}
-                  container
-                  item
-                  xs={4}
-                  spacing={1}
-                >
-                  <button
-                    aria-label="Next"
-                    className="h-button centered hoverTextCenter"
-                    data-text="Next"
-                    onClick={() => this.getMarketPage(1)}
-                  >
-                    <span>
-                      <MdIcons.MdKeyboardArrowRight size={30} />
-                    </span>
-                  </button>
+                  <h4 style={styles.allDataTextDisclaimer}>
+                    This request will take approximately between 5 - 10 minutes
+                    depending on the network.
+                  </h4>
                 </Grid>
               </Grid>
-            </div>
+            ) : (
+              <div style={styles.groupMargin}>
+                <Grid container spacing={3}>
+                  <Grid
+                    style={styles.buttonLeft}
+                    container
+                    item
+                    xs={4}
+                    spacing={1}
+                  >
+                    <button
+                      aria-label="Back"
+                      className="h-button centered hoverTextCenter"
+                      data-text="Back"
+                      onClick={() => this.getMarketPage(-1)}
+                    >
+                      <span>
+                        <MdIcons.MdKeyboardArrowLeft size={30} />
+                      </span>
+                    </button>
+                  </Grid>
+                  <Grid
+                    style={styles.buttonCenter}
+                    container
+                    item
+                    xs={4}
+                    spacing={1}
+                  >
+                    <button
+                      aria-label="Recent"
+                      className="h-button centered hoverTextCenter"
+                      data-text="Recent Listings"
+                      onClick={() => this.getRecentMarket()}
+                    >
+                      <span>
+                        <GiIcons.GiRun size={30} />
+                      </span>
+                    </button>
+                  </Grid>
+                  <Grid
+                    style={styles.buttonRight}
+                    container
+                    item
+                    xs={4}
+                    spacing={1}
+                  >
+                    <button
+                      aria-label="Next"
+                      className="h-button centered hoverTextCenter"
+                      data-text="Next"
+                      onClick={() => this.getMarketPage(1)}
+                    >
+                      <span>
+                        <MdIcons.MdKeyboardArrowRight size={30} />
+                      </span>
+                    </button>
+                  </Grid>
+                </Grid>
+              </div>
+            )}
             <div style={styles.groupMargin}>
               {this.state.isMarketLoaded && this.state.isSorted ? (
                 <div>
@@ -943,6 +1018,17 @@ class Table extends Component<Props> {
                       xs={4}
                       spacing={1}
                     >
+                      <button
+                        aria-label="Get All Data"
+                        className="h-button centered hoverTextCenter"
+                        style={styles.getAllButtonSpacing}
+                        data-text="Get All Data"
+                        onClick={() => this.preGetAllDataCheck()}
+                      >
+                        <span>
+                          <BsIcons.BsStopwatch size={30} />
+                        </span>
+                      </button>
                       <h1 style={styles.pageTitle}>Page </h1>
                       <div className="select">
                         <select
@@ -977,6 +1063,59 @@ class Table extends Component<Props> {
                       </button>
                     </Grid>
                   </Grid>
+                  <div style={styles.allDataDisclaimerContainer}>
+                    <Collapse in={this.state.isCollapsedWarningAllData}>
+                      <Grid container spacing={3}>
+                        <Grid
+                          style={styles.allDataTextDisclaimerCenter}
+                          container
+                          item
+                          xs={12}
+                          spacing={1}
+                        >
+                          <h4 style={styles.allDataTextDisclaimer}>
+                            Note: Getting all data requires a large network
+                            load. This request will take approximately between 5
+                            - 10 minutes depending on the network.
+                          </h4>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={3}>
+                        <Grid
+                          style={styles.cancelButton}
+                          container
+                          item
+                          xs={6}
+                          spacing={1}
+                        >
+                          <button
+                            aria-label="Cancel"
+                            className="h-button centered hoverTextCenter"
+                            style={styles.getAllButtonSpacing}
+                            data-text="Cancel"
+                            onClick={() => this.preGetAllDataCheck()}
+                          >
+                            <span>
+                              <BsIcons.BsX size={30} />
+                            </span>
+                          </button>
+                        </Grid>
+                        <Grid container item xs={6} spacing={1}>
+                          <button
+                            aria-label="Yes! Load All"
+                            className="h-button centered hoverTextCenter"
+                            style={styles.getAllButtonSpacing}
+                            data-text="Yes! Load All"
+                            onClick={() => this.getAllMarket()}
+                          >
+                            <span>
+                              <BsIcons.BsCheck size={30} />
+                            </span>
+                          </button>
+                        </Grid>
+                      </Grid>
+                    </Collapse>
+                  </div>
                 </div>
               ) : null}
             </div>

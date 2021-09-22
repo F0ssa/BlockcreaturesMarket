@@ -40,8 +40,9 @@ class TableContainer extends Component {
   // Heroku sleeps after 1 hour idle time
   async triggerKeepAlive() {
     this.setState({ isAlive: false })
-    // const url = 'https://blockcreatures-marketplace.herokuapp.com/status'
-    const url = 'http://127.0.0.1:5000/status'
+    const url =
+      'https://blockcreatures-marketplace.herokuapp.com/blockcreatures/server_status'
+    // const url = 'http://127.0.0.1:5000/blockcreatures/server_status'
     let localIsAlive = false
     await fetch(url)
       .then((response) => response.json())

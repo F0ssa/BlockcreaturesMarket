@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Alert from '@material-ui/lab/Alert'
-import { Collapse, IconButton, Snackbar } from '@material-ui/core'
+import { Collapse, Container, IconButton, Snackbar } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import * as MdIcons from 'react-icons/md'
 import * as HiIcons from 'react-icons/hi'
@@ -56,67 +56,70 @@ class Announcement extends Component {
 
   render() {
     return (
-      <div style={styles.anonContainer}>
-        <div>
-          <Alert
-            style={styles.disclaimer}
-            icon={<HiIcons.HiLightBulb />}
-            severity="success"
-          >
-            BlockCreatures Market is not associated with BlockCreatures.co.
-            BlockCreatures Market{' '}
-            <b>will never ask for your seed phrase or private key!</b>{' '}
-            BlockCreatures Market is a simplified marketplace with single field
-            sorts. ( Filters coming soon.) <br />
-            Enjoy and keep safe!
-          </Alert>
-        </div>
-        <div style={styles.alertClose}>
-          <Collapse in={this.state.open}>
+      <Container maxWidth="lg">
+        <div style={styles.anonContainer}>
+          <div>
             <Alert
-              icon={<FaIcons.FaDonate />}
-              severity="warning"
-              style={styles.alertColor}
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    this.setState({ open: false })
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
+              style={styles.disclaimer}
+              icon={<HiIcons.HiLightBulb />}
+              severity="success"
             >
-              If you find this market useful, I accept donations thru this
-              address:{' '}
-              <span style={styles.donoText}>
-                0xEc3218026e9da00E1673BC53961B9dc07877c3f3
-              </span>
-              <MdIcons.MdContentCopy
-                onClick={() => {
-                  this.copyAddress()
-                }}
-                style={styles.copyIcon}
-                size={20}
-              />
+              BlockCreatures Market is not associated with BlockCreatures.co.
+              BlockCreatures Market{' '}
+              <b>will never ask for your seed phrase or private key!</b>{' '}
+              BlockCreatures Market is a simplified marketplace with sorting,
+              filters, moolah reward calculations and searching.
+              <br />
+              Enjoy and keep safe!
             </Alert>
-          </Collapse>
+          </div>
+          <div style={styles.alertClose}>
+            <Collapse in={this.state.open}>
+              <Alert
+                icon={<FaIcons.FaDonate />}
+                severity="warning"
+                style={styles.alertColor}
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      this.setState({ open: false })
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+              >
+                If you find this market useful, I accept donations thru this
+                address:{' '}
+                <span style={styles.donoText}>
+                  0xEc3218026e9da00E1673BC53961B9dc07877c3f3
+                </span>
+                <MdIcons.MdContentCopy
+                  onClick={() => {
+                    this.copyAddress()
+                  }}
+                  style={styles.copyIcon}
+                  size={20}
+                />
+              </Alert>
+            </Collapse>
+          </div>
+          <div>
+            <Snackbar
+              open={this.state.isCopied}
+              autoHideDuration={6000}
+              onClose={() => this.handleCloseSnack()}
+            >
+              <Alert onClose={() => this.handleCloseSnack()} severity="success">
+                Address copied to clipboard!
+              </Alert>
+            </Snackbar>
+          </div>
         </div>
-        <div>
-          <Snackbar
-            open={this.state.isCopied}
-            autoHideDuration={6000}
-            onClose={() => this.handleCloseSnack()}
-          >
-            <Alert onClose={() => this.handleCloseSnack()} severity="success">
-              Address copied to clipboard!
-            </Alert>
-          </Snackbar>
-        </div>
-      </div>
+      </Container>
     )
   }
 }
